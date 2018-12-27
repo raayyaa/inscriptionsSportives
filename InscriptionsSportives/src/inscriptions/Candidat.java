@@ -13,7 +13,7 @@ import java.util.TreeSet;
 public abstract class Candidat implements Comparable<Candidat>, Serializable
 {
 	private static final long serialVersionUID = -6035399822298694746L;
-	private Inscriptions inscriptions;
+	protected Inscriptions inscriptions;
 	private String nom;
 	private Set<Competition> competitions;
 	
