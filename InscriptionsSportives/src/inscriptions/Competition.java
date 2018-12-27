@@ -198,4 +198,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 	public String toString() {
 		return getNom();
 	}
+	
+	
+	
 }
