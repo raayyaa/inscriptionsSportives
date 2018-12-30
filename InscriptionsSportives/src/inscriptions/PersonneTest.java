@@ -2,6 +2,8 @@ package inscriptions;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +18,7 @@ public class PersonneTest {
 		inscriptions.reinitialiser();
 		person = inscriptions.createPersonne("Raya", "Raya","ab@g.com");
 		
-
 	}
-
-	
 
 	@Test
 	public void testDelete() {
@@ -28,22 +27,17 @@ public class PersonneTest {
 		assertFalse(person.getEquipes().contains(person));
 	}
 
-	
-	
 
 	@Test
 	public void testAddCompetition() {
-		fail("Not yet implemented");
+		Competition competition = inscriptions.createCompetition("c",LocalDate.now().plusDays(30), false);
+		person.add(competition);
+		assertTrue(person.getCompetitions().contains(competition));
+		
 	}
 
-	@Test
-	public void testRemoveCompetition() {
-		fail("Not yet implemented");
-	}
+	
 
-	@Test
-	public void testCompareTo() {
-		fail("Not yet implemented");
-	}
+	
 
 }

@@ -3,6 +3,7 @@ package inscriptions;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
@@ -89,8 +90,11 @@ public class Competition implements Comparable<Competition>, Serializable {
 
 	public void setDateCloture(LocalDate dateCloture) {
 		// vérifier que l'on avance pas la date.
-		if (dateCloture.isAfter(this.dateCloture))
-			this.dateCloture = dateCloture;	
+		if (dateCloture.isBefore(this.dateCloture))
+			return;
+
+		
+		this.dateCloture = dateCloture;
 	}
 
 	/**
@@ -140,6 +144,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 		if (!enEquipe)
 			throw new RuntimeException();
 		equipe.add(this);
+
 		return candidats.add(equipe);
 	}
 
@@ -150,10 +155,16 @@ public class Competition implements Comparable<Competition>, Serializable {
 	 */
 
 	public Set<Candidat> getCandidatsAInscrire() {
-		//  les candidats que l'on peut inscrire à cette compétition.
+		// les candidats que l'on peut inscrire à cette compétition.
 		Set<Candidat> candidats = new HashSet<>();
 		for (Candidat candidat : inscriptions.getCandidats()) {
+
+			if (enEquipe && (candidat instanceof Personne))
+				continue;
+			if (!enEquipe && (candidat instanceof Equipe))
+				continue;
 			boolean estInscrit = false;
+
 			for (Competition cmpt : inscriptions.getCompetitions()) {
 				if (cmpt.getCandidats().contains(candidat)) {
 					estInscrit = true;
@@ -184,8 +195,12 @@ public class Competition implements Comparable<Competition>, Serializable {
 	 */
 
 	public void delete() {
-		for (Candidat candidat : candidats)
-			remove(candidat);
+		Iterator<Candidat> it = candidats.iterator();
+		while(it.hasNext()) {
+			Candidat candidat = it.next();
+			candidat.remove(this);
+			it.remove();
+		}
 		inscriptions.delete(this);
 	}
 
@@ -198,7 +213,47 @@ public class Competition implements Comparable<Competition>, Serializable {
 	public String toString() {
 		return getNom();
 	}
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((candidats == null) ? 0 : candidats.hashCode());
+		result = prime * result + ((dateCloture == null) ? 0 : dateCloture.hashCode());
+		result = prime * result + (enEquipe ? 1231 : 1237);
+		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Competition other = (Competition) obj;
+		if (candidats == null) {
+			if (other.candidats != null)
+				return false;
+		} else if (!candidats.equals(other.candidats))
+			return false;
+		
+		if (dateCloture == null) {
+			if (other.dateCloture != null)
+				return false;
+		} else if (!dateCloture.equals(other.dateCloture))
+			return false;
+		
+		if (enEquipe != other.enEquipe)
+			return false;
+		if (nom == null) {
+			if (other.nom != null)
+				return false;
+		} else if (!nom.equals(other.nom))
+			return false;
+		return true;
+	}
+
 }

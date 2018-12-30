@@ -92,7 +92,6 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((competitions == null) ? 0 : competitions.hashCode());
-		result = prime * result + ((inscriptions == null) ? 0 : inscriptions.hashCode());
 		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
 		return result;
 	}
@@ -111,11 +110,7 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 				return false;
 		} else if (!competitions.equals(other.competitions))
 			return false;
-		if (inscriptions == null) {
-			if (other.inscriptions != null)
-				return false;
-		} else if (!inscriptions.equals(other.inscriptions))
-			return false;
+		
 		if (nom == null) {
 			if (other.nom != null)
 				return false;

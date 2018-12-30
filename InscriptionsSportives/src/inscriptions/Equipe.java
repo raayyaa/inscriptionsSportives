@@ -87,4 +87,30 @@ public class Equipe extends Candidat {
 	public String toString() {
 		return "Equipe " + super.toString();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((membres == null) ? 0 : membres.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Equipe other = (Equipe) obj;
+		if (membres == null) {
+			if (other.membres != null)
+				return false;
+		} else if (!membres.equals(other.membres))
+			return false;
+		return true;
+	}
+	
 }

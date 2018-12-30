@@ -239,6 +239,39 @@ public class Inscriptions implements Serializable
 			+ "\nCompetitions  " + getCompetitions().toString();
 	}
 	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((candidats == null) ? 0 : candidats.hashCode());
+		result = prime * result + ((competitions == null) ? 0 : competitions.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Inscriptions other = (Inscriptions) obj;
+		if (candidats == null) {
+			if (other.candidats != null)
+				return false;
+		} else if (!candidats.equals(other.candidats))
+			return false;
+		if (competitions == null) {
+			if (other.competitions != null)
+				return false;
+		} else if (!competitions.equals(other.competitions))
+			return false;
+		return true;
+	}
+
 	public static void main(String[] args)
 	{
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
@@ -252,6 +285,7 @@ public class Inscriptions implements Serializable
 		System.out.println(inscriptions);
 		lesManouches.delete();
 		System.out.println(inscriptions);
+		
 		try
 		{
 			inscriptions.sauvegarder();
